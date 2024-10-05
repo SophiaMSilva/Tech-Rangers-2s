@@ -1,3 +1,5 @@
+https://www.tinkercad.com/things/c0B9orCqRy6-hidrosentinela?sharecode=ljfjmka6CFhWfqEEAKSQgo7syDhADfKF4KUCdaYPsYA
+
 #include <Servo.h>
 
 const int trigPin = 9;
