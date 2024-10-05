@@ -1,0 +1,58 @@
+#include <Servo.h>
+
+const int trigPin = 9;
+const int echoPin = 8;
+
+Servo myServo; 
+int servoPin = 3; // Pino de controle do servo
+
+float duration;
+float distance;
+float distanceThreshold65 = 130.0;  // Exemplo: 130 cm é equivalente a 65%
+float distanceThreshold80 = 160.0;  // Exemplo: 160 cm é equivalente a 80%
+
+int servoAngleMax = 180;  // Posição inicial do servo
+int servoAngleMin = 120;  // Posição final do servo
+
+void setup() {
+
+  pinMode(trigPin, OUTPUT);
+  pinMode(echoPin, INPUT);
+ 
+  myServo.attach(servoPin);
+  myServo.write(servoAngleMax); // Servo começa em 180º
+  
+  
+  Serial.begin(9600);
+}
+
+void loop() {
+  
+  digitalWrite(trigPin, LOW);
+  delayMicroseconds(2);
+  digitalWrite(trigPin, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(trigPin, LOW);
+
+ 
+  duration = pulseIn(echoPin, HIGH);
+  
+
+  distance = (duration * 0.034) / 2;
+  
+ 
+  Serial.print("Distância: ");
+  Serial.print(distance);
+  Serial.println(" cm");
+  
+  
+  if (distance >= distanceThreshold65 && distance <= distanceThreshold80) {
+ 
+    int newAngle = map(distance, distanceThreshold65, distanceThreshold80, servoAngleMax, servoAngleMin);
+    myServo.write(newAngle);  
+    Serial.print("Movendo servo para: ");
+    Serial.println(newAngle);
+  }
+  
+  delay(100);
+}
